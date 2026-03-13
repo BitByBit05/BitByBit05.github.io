@@ -1,0 +1,486 @@
+:root {
+    --cream: #f7f3ec;
+    --dark: #1c1814;
+    --rust: #b5490f;
+    --gold: #c9a84c;
+    --warm-gray: #9a8f80;
+    --border: #e2d9cc;
+    --card-bg: #ffffff;
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--cream);
+    color: var(--dark);
+    font-family: 'Jost', sans-serif;
+    min-height: 100vh;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+/* ── HEADER ── */
+header {
+    padding: 52px 24px 28px;
+    text-align: center;
+    background: var(--cream);
+}
+
+.logo-mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.logo-line {
+    width: 28px;
+    height: 1px;
+    background: var(--gold);
+}
+
+.logo-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--gold);
+}
+
+.restaurant-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    opacity: 0;
+    animation: fadeDown 0.8s ease forwards 0.1s;
+}
+
+.restaurant-name em {
+    font-style: italic;
+    color: var(--rust);
+}
+
+.tagline {
+    font-size: 0.65rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--warm-gray);
+    margin-top: 10px;
+    opacity: 0;
+    animation: fadeDown 0.8s ease forwards 0.3s;
+}
+
+/* ── STICKY NAV ── */
+.nav-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(247, 243, 236, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+}
+
+nav {
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 0 16px;
+    gap: 2px;
+}
+
+nav::-webkit-scrollbar {
+    display: none;
+}
+
+nav a {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--warm-gray);
+    text-decoration: none;
+    padding: 14px 14px;
+    white-space: nowrap;
+    position: relative;
+    transition: color 0.2s;
+    flex-shrink: 0;
+}
+
+nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 14px;
+    right: 14px;
+    height: 2px;
+    background: var(--rust);
+    transform: scaleX(0);
+    transition: transform 0.25s ease;
+    border-radius: 2px 2px 0 0;
+}
+
+nav a.active {
+    color: var(--dark);
+}
+
+nav a.active::after {
+    transform: scaleX(1);
+}
+
+/* ── SECTIONS ── */
+section {
+    padding: 32px 0 8px;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+section.visible {
+    opacity: 1;
+    transform: none;
+}
+
+.section-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 20px;
+    margin-bottom: 6px;
+}
+
+.section-label h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    white-space: nowrap;
+}
+
+.section-label .rule {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+}
+
+.section-sub {
+    font-size: 0.72rem;
+    color: var(--warm-gray);
+    letter-spacing: 0.03em;
+    padding: 0 20px;
+    margin-bottom: 20px;
+    font-style: italic;
+    font-family: 'Playfair Display', serif;
+}
+
+/* ── GRID ── */
+.menu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 0 16px 24px;
+}
+
+.menu-grid .card.wide {
+    grid-column: 1 / -1;
+}
+
+/* ── CARD ── */
+.card {
+    background: var(--card-bg);
+    border-radius: 14px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 2px 10px rgba(28, 24, 20, 0.07);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.card:active {
+    transform: scale(0.97);
+    box-shadow: 0 1px 5px rgba(28, 24, 20, 0.08);
+}
+
+.card-img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+    background: var(--border);
+}
+
+.card.wide .card-img {
+    aspect-ratio: 16 / 9;
+}
+
+/* gradient overlay for wide featured cards */
+.card.wide .card-img-wrap {
+    position: relative;
+    display: block;
+}
+
+.card.wide .card-img-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(28, 24, 20, 0.58) 0%, transparent 55%);
+}
+
+/* badges */
+.card-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 8px;
+    border-radius: 4px;
+    backdrop-filter: blur(6px);
+    z-index: 2;
+}
+
+.badge-new {
+    background: var(--rust);
+    color: #fff;
+}
+
+.badge-v {
+    background: rgba(255, 255, 255, 0.88);
+    color: #2e6b2e;
+}
+
+.badge-sig {
+    background: rgba(201, 168, 76, 0.9);
+    color: #fff;
+}
+
+/* normal card body */
+.card-body {
+    padding: 10px 12px 13px;
+}
+
+.card-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    font-weight: 400;
+    line-height: 1.25;
+    margin-bottom: 3px;
+    color: var(--dark);
+}
+
+.card-desc {
+    font-size: 0.68rem;
+    color: var(--warm-gray);
+    line-height: 1.5;
+    margin-bottom: 9px;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+}
+
+.card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--rust);
+}
+
+.card-tags {
+    display: flex;
+    gap: 3px;
+}
+
+.tag {
+    font-size: 0.55rem;
+    letter-spacing: 0.07em;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-weight: 500;
+}
+
+.tag-v {
+    background: #e8f0e8;
+    color: #2e6b2e;
+}
+
+.tag-gf {
+    background: #f5ede0;
+    color: #7a5a20;
+}
+
+.tag-s {
+    background: #fce8e8;
+    color: #9b2020;
+}
+
+/* wide card: text overlaid on image */
+.card.wide .card-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 14px 16px 16px;
+    z-index: 2;
+}
+
+.card.wide .card-overlay .card-name {
+    color: #fff;
+    font-size: 1.15rem;
+    margin-bottom: 3px;
+}
+
+.card.wide .card-overlay .card-desc {
+    color: rgba(255, 255, 255, 0.72);
+    margin-bottom: 8px;
+}
+
+.card.wide .card-overlay .card-price {
+    color: var(--gold);
+}
+
+.card.wide .card-overlay .tag-v {
+    background: rgba(255, 255, 255, 0.15);
+    color: #b8e6b8;
+}
+
+.card.wide .card-overlay .tag-gf {
+    background: rgba(255, 255, 255, 0.15);
+    color: #f0d8a8;
+}
+
+.card.wide .card-overlay .tag-s {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffb0b0;
+}
+
+/* ── WINE: horizontal scroll ── */
+.wine-scroll {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 0 16px 28px;
+    scrollbar-width: none;
+}
+
+.wine-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.wine-card {
+    flex-shrink: 0;
+    width: 148px;
+    background: var(--dark);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(28, 24, 20, 0.14);
+}
+
+.wine-card img {
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    opacity: 0.7;
+    display: block;
+}
+
+.wine-card-body {
+    padding: 11px 12px 14px;
+}
+
+.wine-year {
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+.wine-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.85rem;
+    color: #f7f3ec;
+    line-height: 1.3;
+    margin-bottom: 5px;
+}
+
+.wine-desc {
+    font-size: 0.63rem;
+    color: var(--warm-gray);
+    font-style: italic;
+    font-family: 'Playfair Display', serif;
+    line-height: 1.5;
+    margin-bottom: 8px;
+}
+
+.wine-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.88rem;
+    color: var(--gold);
+}
+
+/* ── FOOTER ── */
+footer {
+    padding: 28px 24px calc(28px + var(--safe-bottom));
+    text-align: center;
+    border-top: 1px solid var(--border);
+    margin-top: 8px;
+}
+
+.footer-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-style: italic;
+    margin-bottom: 6px;
+}
+
+.footer-note {
+    font-size: 0.68rem;
+    color: var(--warm-gray);
+    line-height: 1.9;
+    margin-bottom: 18px;
+}
+
+.legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.legend span {
+    font-size: 0.63rem;
+    color: var(--warm-gray);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+@keyframes fadeDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
